@@ -8,7 +8,7 @@ env.bak/
 venv.bak/ 
 
 # Database File
-Database\ Files/
+Database\ File/
 *.sh
 *.csv
 
