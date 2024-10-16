@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from .models import Place
 from .serializers import PlaceSerializers
@@ -22,3 +22,18 @@ class PlaceListCreateView(ListCreateAPIView):
         if self.request.method == "POST":
             return [IsAdminUser()]
         return [IsAuthenticatedOrReadOnly()]
+
+class DetailedView(RetrieveUpdateDestroyAPIView):
+    queryset = Place.objects.annotate(
+        avg_rating=Avg("ratings__score"),
+        total_rating=Count("ratings")
+    )
+
+    serializer_class = PlaceSerializers
+
+     # Only Admin can put, patch, delete places
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAdminUser()]
+        return [IsAuthenticatedOrReadOnly()]
+
