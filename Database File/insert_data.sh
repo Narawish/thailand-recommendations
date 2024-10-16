@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PSQL="psql -X --username=narawishing --dbname=thailand_recommendations --no-align --tuples-only -c"
-echo $($PSQL "TRUNCATE recommendations_place;")
+echo $($PSQL "TRUNCATE recommendations_place, recommendations_comment, recommendations_rating;")
 cat Places.csv | while IFS="," read PLACE LAT LONG
 do
 	if [[ $Place != Place ]]
