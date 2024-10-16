@@ -9,6 +9,8 @@ venv.bak/
 
 # Database File
 Database\ Files/
+*.sh
+*.csv
 
 # Django #
 *.log
@@ -17,3 +19,5 @@ Database\ Files/
 __pycache__
 db.sqlite3
 media
+
+
