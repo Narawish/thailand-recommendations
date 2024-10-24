@@ -1,22 +1,22 @@
 from rest_framework import serializers
-from .models import Place, Comment, Rating
+from .models import Place, Rating
 from django.contrib.auth.models import User
 
-class CommentSerializers(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
+# class CommentSerializers(serializers.ModelSerializer):
+#     user = serializers.StringRelatedField()
 
-    class Meta:
-        model = Comment
-        fields = ["id","user","content","created_at"]
+#     class Meta:
+#         model = Comment
+#         fields = ["id","user","content","created_at"]
 
 class RatingSerializers(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fields = ["id", "score", "user"]
+        fields = ["id", "score", "user", "content"]
 
 class PlaceSerializers(serializers.ModelSerializer):
     average_rating = serializers.FloatField(read_only=True)
-    comments = CommentSerializers(many=True, read_only=True)
+    comments = RatingSerializers(many=True, read_only=True)
     rating_count = serializers.SerializerMethodField()
     class Meta:
         model = Place
