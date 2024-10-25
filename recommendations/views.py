@@ -189,8 +189,16 @@ class ProtectedRatingView(APIView):
                 },
                 status= status.HTTP_400_BAD_REQUEST
             )
+        
+        rating = Rating.objects.filter(place_id=pk)
+        if not rating:
+            return Response(
+                {
+                    "error":f"no rating of place_id {place.id}"
+                }
+            )
         try:
-            Rating.objects.filter(place_id=pk).update(
+            rating.update(
                 place = place,
                 user = user,
                 score = score,
