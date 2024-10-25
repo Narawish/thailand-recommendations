@@ -34,7 +34,7 @@ class Rating(models.Model):
     score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     content = models.TextField(default="")
     created_at = models.DateTimeField(auto_now=True)
-
+    
     class Meta:
         unique_together = ['place','user']
 
