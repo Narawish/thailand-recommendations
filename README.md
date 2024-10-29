@@ -1,9 +1,5 @@
-# Thailand Recommendation Fullstack
+# Thailand Recommendation API
 
 ## Backend
 
-Using Python-Django
-
-## Frontend
-
-Using React
+Using Python Django rest_framework
