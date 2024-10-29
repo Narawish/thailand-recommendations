@@ -29,3 +29,8 @@ class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id","username","email"]
+
+class RecommendationSerializer(serializers.Serializer):
+    min_distance = serializers.FloatField()
+    sorted_places = serializers.ListField()
+    

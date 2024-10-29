@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from rest_framework import status, permissions, viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,12 +8,13 @@ from django.db.utils import IntegrityError
 import logging
 from thailand_recommendations import settings
 import jwt
-from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from django.contrib.auth import get_user_model
-from .serializers import PlaceSerializers, RatingSerializers
+from .serializers import PlaceSerializers, RatingSerializers, RecommendationSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 from django.db.models import Avg, Count
 import numpy as np
+from .utils import get_min_distance
 
 
 # Create your views here.
@@ -258,3 +259,19 @@ class ProtectedRatingView(APIView):
                     "error":"Unable to delete rating"
                 }
             )
+        
+class RecommendationView(ListAPIView):
+    def get(self, request):
+        objects = Place.objects.annotate(
+            avg_rating=Avg("ratings__score"),
+            total_rating=Count("ratings")
+        )
+        random_number = np.random.randint(0,len(objects)-5)
+        places = objects[random_number:random_number+5]
+        # print(places)
+        min_distance, sorted_places = get_min_distance(places)
+
+        serializer = RecommendationSerializer({"min_distance":min_distance, 
+                                                    "sorted_places":sorted_places})
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
