@@ -1,8 +1,10 @@
 # Thailand Recommendation API
 
-## Backend
-
-Using Python Django rest_framework
+This project is django-based api for travel locations ratings and automated routing optimization with provided features:
+1. JWT authentication using username and password
+2. Adding new locations
+3. Remove new locations
+4. Finding optimal travel route by minimizing travelling distance
 
 ## Installation
 
@@ -17,4 +19,5 @@ Using Python Django rest_framework
 `python manage.py migrate`
 5. Start server
 `python manage.py runserver`
-   
+
+## Endpoints
